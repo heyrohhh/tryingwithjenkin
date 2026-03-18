@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: testingproject
+spec:
+ replicas: 3
+ selector:
+   matchLabels:
+      app: frontend
+ template:
+     metadata:
+       labels:
+         app: frontend
+     spec:
+       containers:
+        - name: frontendImg
+          image: heyrohhh/test-jenkinsv3:IMAGE_TAG
+          ports:
+           - containerPort: 8080
+          resources:
+             requests:
+                  cpu: 128m
+                  memory: 256Mi
+             limits:
+                 cpu: 256m
+                 memory: 512Mi
+          livenessProbe:
+           httpGet:
+            path: /health
+            port: 8080
+           initialDelaySeconds: 15
+           periodSeconds: 20
+          readinessProbe:
+           httpGet:
+            path: /ready
+            port: 8080
+           initialDelaySeconds: 15
+           periodSeconds: 20
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontendservice
+  namespace: testingproject
+spec:
+  type: LoadBalancer
+  selector:
+     app: frontend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

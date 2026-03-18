@@ -42,6 +42,15 @@ pipeline{
                 }
             }
         }
+
+        stage('Deploy to Kubernate'){
+            steps{
+                sh """
+                    sed -i 's/IMAGE_TAG/${TAG}/g' deployment.yml
+                    kubectl apply -f deployment.yml
+                    """
+            }
+        }
      }
     post {
         always {
