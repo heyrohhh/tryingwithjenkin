@@ -14,7 +14,7 @@ spec:
          app: frontend
      spec:
        containers:
-        - name: frontendImg
+        - name: frontendimg
           image: heyrohhh/test-jenkinsv3:IMAGE_TAG
           ports:
            - containerPort: 8080
