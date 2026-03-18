@@ -21,8 +21,8 @@ pipeline{
         stage('Trivy Scan'){
             steps{
                 sh ''' 
-                      trivy image --exit-code 0 --severity CRITICAL,HIGH --format json --output trivy-report.json $IMAGE:$TAG 
-                      trivy image --exit-code 1 --severity CRITICAL,HIGH --format template --template "@/usr/local/share/trivy/templates/html.tpl" --output trivy-report.html $IMAGE:$TAG
+                      trivy image --format json -o report.json $IMAGE:$TAG
+                      trivy image --exit-code 1 --severity CRITICAL,HIGH $IMAGE:$TAG
                     '''
             }
         }
@@ -54,7 +54,7 @@ pipeline{
      }
     post {
         always {
-            archiveArtifacts artifacts: 'trivy-report.html, trivy-report.json',
+            archiveArtifacts artifacts: 'report.json',
                          allowEmptyArchive: true
             sh 'docker system prune -f || true'
         }
