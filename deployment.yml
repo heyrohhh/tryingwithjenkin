@@ -15,7 +15,7 @@ spec:
      spec:
        containers:
         - name: frontendimg
-          image: heyrohhh/test-jenkinsv3:IMAGE_TAG
+          image: heyrohhh/testjenkinsv3:IMAGE_TAG
           ports:
            - containerPort: 8080
           resources:
