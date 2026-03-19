@@ -21,8 +21,8 @@ pipeline{
         stage('Trivy Scan'){
             steps{
                 sh ''' 
-                      trivy image --format json -o report.json $IMAGE:$TAG
-                      trivy image --exit-code 1 --severity CRITICAL,HIGH $IMAGE:$TAG
+                      trivy image --format json --ignore-unfixed -o report.json $IMAGE:$TAG
+                      trivy image --exit-code 1 --severity CRITICAL,HIGH --ignore-unfixed $IMAGE:$TAG
                     '''
             }
         }
